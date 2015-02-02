@@ -50,7 +50,7 @@ define([
       description: 'A percentiles panel for displaying aggregations using the Elastic Search percentiles aggregation query.'
     };
 
-    $scope.modes = ['50.0','75.0','90.0','95.0','99.0'];
+    $scope.modes = ['50.0','75.0','90.0','95.0','99.0','99.9'];
 
     var defaults = {
       queries     : {
@@ -125,7 +125,7 @@ define([
           'filter': JSON.parse($scope.ejs.QueryFilter(
             $scope.ejs.FilteredQuery(
               boolQuery,
-              filterSrv.getBoolFilter(filterSrv.ids())
+              filterSrv.getBoolFilter(filterSrv.ids)
             )
           ).toString(), true),
           'aggs': {
@@ -154,7 +154,7 @@ define([
           'filter': JSON.parse($scope.ejs.QueryFilter(
             $scope.ejs.FilteredQuery(
               query,
-              filterSrv.getBoolFilter(filterSrv.ids())
+              filterSrv.getBoolFilter(filterSrv.ids)
             )
           ).toString(), true),
           'aggs': aggsquery
@@ -170,7 +170,7 @@ define([
       });
 
       results.then(function(results) {
-        var value = results.data.aggregations.stats['stats'][$scope.panel.mode];
+        var value = results.data.aggregations.stats['stats'].values[$scope.panel.mode];
         console.log('post');
 
         var rows = queries.map(function (q, i) {
@@ -178,8 +178,8 @@ define([
           var obj = _.clone(q);
           obj.label = alias;
           obj.Label = alias.toLowerCase(); //sort field
-          obj.value = results.data.aggregations['stats_'+i]['stats_'+i];
-          obj.Value = results.data.aggregations['stats_'+i]['stats_'+i]; //sort field
+          obj.value = results.data.aggregations['stats_'+i]['stats_'+i].values;
+          obj.Value = results.data.aggregations['stats_'+i]['stats_'+i].values; //sort field
 
           var _V = {}
           for(var k in obj.Value){
