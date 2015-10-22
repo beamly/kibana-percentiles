@@ -130,9 +130,9 @@ define([
           ).toString(), true),
           'aggs': {
             'stats': {
-              'percentiles': {
+              'percentile_ranks': {
                 'field': $scope.panel.field,
-                'percents': percents
+                'values': percents
               }
             }
           }
@@ -145,9 +145,9 @@ define([
         var qname = 'stats_'+i;
         var aggsquery = {};
         aggsquery[qname] = {
-          'percentiles': {
+          'percentile_ranks': {
             'field': $scope.panel.field,
-            'percents': percents
+            'values': percents
           }
         };
         request[qname] = {
